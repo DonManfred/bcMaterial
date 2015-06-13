@@ -1,0 +1,183 @@
+﻿Version=5.01
+NumberOfModules=0
+Build1=Default,de.donmanfred.MaterialEx1
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.basic4ppc.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="14"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~SetApplicationAttribute(android:theme, "@android:style/Theme.Holo")~\n~'End of default text.~\n~SetApplicationAttribute(android:theme, "@style/myMaterialTheme")
+IconFile=
+NumberOfFiles=1
+File1=Layout1.bal
+NumberOfLibraries=2
+Library1=core
+Library2=bcmaterial
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: msMaterial Ex1
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: False
+	#AdditionalRes: ..\Resources
+	#AdditionalRes: E:\Android\android-sdk\extras\android\support\v7\appcompat\res, android.support.v7.appcompat	
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+End Sub
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	'These variables can only be accessed from this module.
+	Private tPick As bcTimePicker
+	Private snack As bcSnackBar
+	Private chk1 As bcCheckBox
+	Private pv1,pv2 As bcCircularProgressView
+	Private radio1 As bcRadiobutton
+	Private radio2 As bcRadiobutton
+	Private slider1 As bcSlider
+	Private slider2 As bcSlider
+	Private switch As bcSwitch
+	Private selectedHour, selectedMinute As Int
+	Private lblTime As Label
+	Private pv3 As bcLinearProgressView
+	Private arrow As bcArrowDrawable
+	Private Button1 As Button
+End Sub
+Sub Activity_Create(FirstTime As Boolean)
+	'Do not forget to load the layout file created with the visual designer. For example:
+	Activity.LoadLayout("Layout1")
+	arrow.Initialize("")
+	arrow.start
+	Button1.Background = arrow.Current
+	Button1.Text = "TEST"
+	tPick.BackgroundColor = Colors.Black
+	tPick.Color = Colors.ARGB(128,192,192,0)
+	selectedHour = 16
+	selectedMinute = 0
+	tPick.Hour = selectedHour
+	tPick.Minute = selectedMinute
+	lblTime.Text = NumberFormat(selectedHour,2,0)&":"&NumberFormat(selectedMinute,2,0)
+	tPick.TwentyFourHour = True
+	tPick.SelectionRadius = 50
+	tPick.TextSize = 50
+	tPick.TextColor = Colors.Blue
+	tPick.TextHighlightColor = Colors.Green
+	tPick.TickSize = 3dip
+	tPick.TickColor = Colors.Red
+	
+	
+	snack.Initialize("snackbar")
+	snack.actionText("Close")
+	snack.actionTextColor(Colors.Yellow)
+	snack.singleLine(False)
+	snack.Text("Snackbartext"&CRLF&"Line two of snackbar")
+	snack.TextColor(Colors.Blue)
+	snack.duration(50000)
+	snack.show
+	
+	chk1.Text = "Checkbox"
+	chk1.TextColor = Colors.White
+	
+	
+	radio1.Tag = 1
+	radio1.Text = "Radiobutton 1"
+	radio1.TextColor = Colors.White
+	radio2.Tag = 2
+	radio2.Text = "Radiobutton 2"
+	radio2.TextColor = Colors.White
+	
+	
+	pv2.Colors = Array As Int(Colors.Blue, Colors.Cyan, Colors.Magenta)	
+	pv3.Colors = Array As Int(Colors.Blue, Colors.Red, Colors.Green, Colors.Yellow)	
+
+	'pv1.mProgressId = 1
+	'pv1.stop
+	
+	slider1.MinValue = 0
+	slider1.MaxValue = 100
+	slider1.StepValue = 10
+	slider1.DiscreteMode = True
+	
+	slider2.MinValue = 0
+	slider2.MaxValue = 100
+	slider2.StepValue = 5
+	slider2.DiscreteMode = False
+	
+	switch.BackgroundColor = Colors.DarkGray
+	'switch.Color = colors.Yellow
+End Sub
+Sub Activity_Resume
+End Sub
+Sub Activity_Pause (UserClosed As Boolean)
+End Sub
+
+
+
+Sub TimePick_onModeChanged(mode As Int)
+	Log($"onModeChanged(${mode})"$)
+End Sub
+Sub TimePick_onHourChanged(oldValue As Int, newValue As Int)
+	selectedHour = newValue
+	lblTime.Text = NumberFormat(selectedHour,2,0)&":"&NumberFormat(selectedMinute,2,0)
+	Log($"onHourChanged(${oldValue},${newValue})"$)
+End Sub
+Sub tpick_onTimeChanged(oldHour As Int, oldMinute As Int, newHour As Int, newMinute As Int)
+	selectedHour = newHour
+	lblTime.Text = NumberFormat(newHour,2,0)&":"&NumberFormat(newMinute,2,0)
+	Log($"onTimeChanged(${oldHour},${oldMinute},${newHour},${newMinute})"$)
+	
+End Sub
+
+Sub TimePick_onMinuteChanged(oldValue As Int, newValue As Int)
+	' Change the "Mod 1" to any other value.
+	' For example 
+	' If you want To set only 00/15/30/45 you should use Mod 15
+	' if you want to set only 0/5/10/15/20/25/30/35/40/45/50/55 you should use Mod 5
+	' if you want to set an exact minute you should use Mod 1 or dont use an if block here
+	If newValue Mod 1 = 0 Then
+		selectedMinute = newValue
+		lblTime.Text = NumberFormat(selectedHour,2,0)&":"&NumberFormat(selectedMinute,2,0)
+		Log($"onMinuteChanged(${oldValue},${newValue})"$)
+	End If
+End Sub
+'Sub DatePicker_onDateChanged(oldDay As Int, oldMonth As Int, oldYear As Int, newDay As Int, newMonth As Int, newYear As Int)
+'	Log($"onDateChanged(${oldDay},${oldMonth},${oldYear},${newDay},${newMonth},${newYear})"$)
+'End Sub
+Sub chk_onCheckedChanged(tag As Object, checked As Boolean)
+	Log($"chk_onCheckedChanged(${tag},${checked})"$)
+End Sub
+Sub radio_onCheckedChanged(tag As Object, checked As Boolean)
+	Log($"radio_onCheckedChanged(${tag},${checked})"$)
+	If checked Then
+		If tag = 1 Then
+			radio2.CheckedImmediately = False
+		Else 
+			radio1.CheckedImmediately = False
+		End If
+	End If
+End Sub
+Sub chkText_onClick(v As Object)
+	Dim chk As msCheckedTextView = v
+	If chk.Checked Then
+		chk.Checked = False
+	Else
+		chk.Checked = True
+	End If
+	Log($"chk_onClick(${chk.Tag})"$)
+End Sub
+Sub slider_onPositionChanged(v As Object, oldPos As Float, newPos As Float, oldValue As Int, newValue As Int)
+	Log($"slider_onPositionChanged(${oldPos},${newPos},${oldValue},${newValue})"$)
+End Sub
+Sub switch_onCheckedChanged(v As Object, checked As Boolean)
+	Log($"switch_onCheckedChanged(${checked})"$)
+End Sub
+
+Sub lblTime_Click
+	tPick.setMode(0,True)
+End Sub
+Sub Button1_Click
+End Sub

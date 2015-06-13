@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="E:/Android/android-sdk/platforms/android-21/android.jar"/>
+	<classpathentry kind="lib" path="E:/Basic4android3/Libraries/B4AShared.jar"/>
+	<classpathentry kind="lib" path="E:/Basic4android3/Libraries/Core.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="libs/android-support-v7-appcompat.jar"/>
+	<classpathentry kind="lib" path="libs/android-support-v7-cardview.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
